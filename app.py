@@ -2,6 +2,7 @@ from flask import Flask
 from apps.main.views import main as main_blueprint
 from apps.auth.views import auth as auth_blueprint
 from database import db
+from flask_migrate import Migrate
 from flask_login import LoginManager
 from apps.auth.models import User
 
@@ -13,6 +14,7 @@ def create_app():
 
     # setup all our dependencies
     db.init_app(app)
+    Migrate(app, db)
 
     login_manager = LoginManager()
     login_manager.login_view = 'auth.signin'
