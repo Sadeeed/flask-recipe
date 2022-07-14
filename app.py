@@ -4,7 +4,10 @@ from apps.auth.views import auth as auth_blueprint
 from database import db
 from flask_migrate import Migrate
 from flask_login import LoginManager
+
+# Models must be imported here for flask migrate to detect them
 from apps.auth.models import User
+from apps.main.models import Recipe, Ingredient, ingredients
 
 
 def create_app():
