@@ -54,8 +54,6 @@ def signup_post():
     # add the new user to the database
     db.session.add(new_user)
     db.session.commit()
-    import pdb
-    pdb.set_trace()
 
     return redirect(url_for('auth.signin'))
 

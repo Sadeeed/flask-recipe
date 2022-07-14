@@ -1,0 +1,17 @@
+{% extends 'layouts/base.html' %}
+
+{% block content %}
+    <div class="card mt-5">
+        <h5 class="card-header text-center">{{ name }}</h5>
+        <div class="card-body">
+            <h6 class="card-title mb-2">Ingredients</h6>
+            <ul>
+                {% for ingredient in ingredients %}
+                    <li>{{ ingredient.name }}</li>
+                {% endfor %}
+            </ul>
+            <h6 class="card-title mb-2">Instructions:</h6>
+            <p class="card-text">{{ method }}</p>
+        </div>
+    </div>
+{% endblock %}

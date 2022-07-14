@@ -1,5 +1,13 @@
 {% extends 'layouts/base.html' %}
 
 {% block content %}
-    Hello World
+    <div class="mt-4">
+        <h1>Recipes</h1>
+        <a class="btn btn-primary mb-2" href="{{ url_for('main.add_recipe') }}">Add</a>
+        <ul class="list-group">
+            {% for recipe in recipes %}
+                <a href="{{ url_for('main.recipe', slug=recipe.slug) }}" class="list-group-item list-group-item-action">{{ recipe.name }}</a>
+            {% endfor %}
+        </ul>
+    </div>
 {% endblock %}

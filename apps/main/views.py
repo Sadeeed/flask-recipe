@@ -1,12 +1,52 @@
 from flask import Blueprint, request, url_for, redirect, render_template, flash
 from flask_login import login_required, current_user
+from slugify import slugify
+from database import db
+
+from apps.main.models import Recipe, Ingredient
 
 main = Blueprint('main', __name__, template_folder="templates/main")
 
 
 @main.route("/")
 def index():
-    return render_template('index.html')
+    recipes = Recipe.query.all()
+    return render_template('index.html', recipes=recipes)
+
+
+@main.route("/recipe/<slug>")
+def recipe(slug):
+    recipe = Recipe.query.filter_by(slug=slug).first()
+    if recipe:
+        ingredients = recipe.ingredients
+        method = recipe.method
+        name = recipe.name
+        return render_template('recipe.html', name=name, ingredients=ingredients, method=method)
+    else:
+        return redirect(url_for('main.index'))
+
+
+@main.route("/recipe/add", methods=['GET', 'POST'])
+@login_required
+def add_recipe():
+    if request.method == 'GET':
+        return render_template('add_recipe.html')
+
+    if request.method == 'POST':
+        mutable_request = request.form.copy()
+        mutable_request.pop('name')
+        mutable_request.pop('method')
+        new_recipe = Recipe(name=request.form['name'], slug=slugify(request.form['name']),
+                            method=request.form['method'])
+
+        for ingredient in mutable_request.values():
+            ingredient = Ingredient(name=ingredient)
+            new_recipe.ingredients.append(ingredient)
+
+        db.session.add(new_recipe)
+        db.session.commit()
+
+        return redirect(url_for('main.index'))
 
 
 @main.route("/profile")

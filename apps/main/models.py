@@ -9,9 +9,10 @@ ingredients = db.Table('ingredients',
 class Recipe(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(150))
+    slug = db.Column(db.String(256))
     ingredients = db.relationship('Ingredient', secondary=ingredients, lazy='subquery',
                                   backref=db.backref('recipes', lazy=True))
-    method = db.Column(db.String(150))
+    method = db.Column(db.String(10000))
 
     def __repr__(self):
         return f"<Recipe {self.name}>"
@@ -19,8 +20,8 @@ class Recipe(db.Model):
 
 class Ingredient(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    name = db.column(db.String(256))
-    quantity = db.column(db.Integer)
+    name = db.Column(db.String(256))
+    quantity = db.Column(db.Integer)
 
     def __repr__(self):
         return f"<Ingredient {self.name}>"
