@@ -8,8 +8,10 @@ class User(db.Model, UserMixin):
     email = db.Column(db.String(150), unique=True)
     password = db.Column(db.String(150))
 
+    def __init__(self, email, name, password):
+        self.email = email
+        self.name = name
+        self.password = password
 
-# def __init__(self, email, name, password):
-#     self.email = email
-#     self.name = name
-#     self.password = password
+    def __repr__(self):
+        return f"<User {self.name}>"

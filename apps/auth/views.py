@@ -20,9 +20,6 @@ def signin_post():
 
     user = User.query.filter_by(email=email).first()
 
-    import pdb;
-    pdb.set_trace()
-
     # check if the user actually exists
     # take the user-supplied password, hash it, and compare it to the hashed password in the database
     if not user or not check_password_hash(user.password, password):
@@ -42,11 +39,11 @@ def signup():
 @auth.route('/signup', methods=['POST'])
 def signup_post():
     email = request.form.get('email')
-    name = request.form.get('name')
+    name = request.form.get('username')
     password = request.form.get('password')
 
-    user = User.query.filter_by(
-        email=email).first()  # if this returns a user, then the email already exists in database
+    # check if user exists
+    user = User.query.filter_by(email=email).first()
 
     if user:  # if a user is found, we want to redirect back to signup page so user can try again
         flash('Email address already exists')
@@ -57,14 +54,17 @@ def signup_post():
     # add the new user to the database
     db.session.add(new_user)
     db.session.commit()
-    redirect(url_for('auth.signin'))
+    import pdb
+    pdb.set_trace()
+
+    return redirect(url_for('auth.signin'))
 
 
 @auth.route('/logout')
 @login_required
 def logout():
     logout_user()
-    return 'Logout'
+    return redirect(url_for('main.index'))
 
 
 @auth.app_errorhandler(404)
