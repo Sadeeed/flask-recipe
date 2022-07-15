@@ -1,5 +1,6 @@
 from flask import Blueprint, request, url_for, redirect, render_template, flash
 from flask_login import login_required, current_user
+from flask_restful import Resource
 from slugify import slugify
 from database import db
 
@@ -99,3 +100,44 @@ def profile():
 @main.app_errorhandler(404)
 def page_not_found():
     return render_template('layouts/404.html'), 404
+
+
+class RecipeList(Resource):
+    def get(self):
+        recipes = Recipe.query.all()
+        return {'Recipes': list(x.json() for x in recipes)}
+
+    def post(self):
+        data = request.get_json()
+        new_recipe = Recipe(name=data['name'], method=data['method'], slug=slugify(data['name']))
+        for ingredient in data['ingredients']:
+            ingredient = Ingredient(name=ingredient)
+            new_recipe.ingredients.append(ingredient)
+        db.session.add(new_recipe)
+        db.session.commit()
+        return new_recipe.json(), 201
+
+
+class RecipeView(Resource):
+    def get(self, recipe_id):
+        recipe = Recipe.query.filter_by(id=recipe_id).first()
+        if recipe:
+            return recipe.json()
+        else:
+            return {'message': 'recipe not found'}, 404
+
+    def put(self, recipe_id):
+        data = request.get_json()
+
+        recipe = Recipe.query.filter_by(id=recipe_id).first()
+
+        if recipe:
+            recipe.name = data['name']
+            recipe.method = data['method']
+        else:
+            recipe = Recipe(name=data['name'], method=data['method'], slug=slugify(data['name']))
+
+        db.session.add(recipe)
+        db.session.commit()
+
+        return recipe.json()

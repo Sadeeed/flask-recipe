@@ -17,6 +17,11 @@ class Recipe(db.Model):
     def __repr__(self):
         return f"<Recipe {self.name}>"
 
+    def json(self):
+        return {"id": self.id, "name": self.name, "slug": self.slug,
+                "ingredients": list(x.json() for x in self.ingredients),
+                "method": self.method}
+
 
 class Ingredient(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -25,3 +30,6 @@ class Ingredient(db.Model):
 
     def __repr__(self):
         return f"<Ingredient {self.name}>"
+
+    def json(self):
+        return {"id": self.id, "name": self.name, "quantity": self.quantity}

@@ -1,5 +1,7 @@
 from flask import Flask
-from apps.main.views import main as main_blueprint
+from flask_restful import Api
+
+from apps.main.views import main as main_blueprint, RecipeList, RecipeView
 from apps.auth.views import auth as auth_blueprint
 from database import db
 from flask_migrate import Migrate
@@ -18,6 +20,7 @@ def create_app():
     # setup all our dependencies
     db.init_app(app)
     Migrate(app, db)
+    api = Api(app)
 
     login_manager = LoginManager()
     login_manager.login_view = 'auth.signin'
@@ -31,6 +34,10 @@ def create_app():
     # register blueprint
     app.register_blueprint(main_blueprint)
     app.register_blueprint(auth_blueprint, url_prefix="/auth")
+
+    # apis
+    api.add_resource(RecipeList, '/api/recipe')
+    api.add_resource(RecipeView, '/api/recipe/<recipe_id>')
 
     return app
 
