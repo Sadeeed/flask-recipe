@@ -21,7 +21,7 @@ def recipe(slug):
         ingredients = recipe.ingredients
         method = recipe.method
         name = recipe.name
-        return render_template('recipe.html', name=name, ingredients=ingredients, method=method)
+        return render_template('recipe.html', name=name, ingredients=ingredients, method=method, id=recipe.id)
     else:
         return redirect(url_for('main.index'))
 
@@ -47,6 +47,18 @@ def add_recipe():
         db.session.commit()
 
         return redirect(url_for('main.index'))
+
+
+@main.route("/recipe/delete/<recipe_id>")
+@login_required
+def del_recipe(recipe_id):
+    recipe = Recipe.query.filter_by(id=recipe_id).first()
+    if recipe is not None:
+        db.session.delete(recipe)
+        db.session.commit()
+    else:
+        flash("The recipe does not exist")
+    return redirect(url_for('main.index'))
 
 
 @main.route("/profile")

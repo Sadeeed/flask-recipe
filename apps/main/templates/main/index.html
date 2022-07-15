@@ -2,11 +2,19 @@
 
 {% block content %}
     <div class="mt-4">
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <div class="alert alert-danger mt-3" role="alert">
+                    {{ messages[0] }}
+                </div>
+            {% endif %}
+        {% endwith %}
         <h1>Recipes</h1>
         <a class="btn btn-primary mb-2" href="{{ url_for('main.add_recipe') }}">Add</a>
         <ul class="list-group">
             {% for recipe in recipes %}
-                <a href="{{ url_for('main.recipe', slug=recipe.slug) }}" class="list-group-item list-group-item-action">{{ recipe.name }}</a>
+                <a href="{{ url_for('main.recipe', slug=recipe.slug) }}"
+                   class="list-group-item list-group-item-action">{{ recipe.name }}</a>
             {% endfor %}
         </ul>
     </div>
