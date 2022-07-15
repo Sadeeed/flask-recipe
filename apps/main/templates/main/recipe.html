@@ -2,7 +2,6 @@
 
 {% block content %}
     <div class="container mt-5">
-        <a class="btn btn-danger mb-1" href="{{ url_for('main.del_recipe', recipe_id=id) }}">Delete</a>
         <div class="card">
             <h5 class="card-header text-center">{{ name }}</h5>
             <div class="card-body">
@@ -16,5 +15,7 @@
                 <p class="card-text">{{ method }}</p>
             </div>
         </div>
+        <a class="btn btn-success mt-1" href="{{ url_for('main.edit_recipe', recipe_id=id) }}">Edit</a>
+        <a class="btn btn-danger mt-1" href="{{ url_for('main.del_recipe', recipe_id=id) }}">Delete</a>
     </div>
 {% endblock %}
