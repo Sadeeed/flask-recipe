@@ -18,7 +18,13 @@
                 <label for="method" class="form-label">Instructions</label>
                 <textarea class="form-control" id="method" name="method"></textarea>
             </div>
-            <button class="btn btn-primary">Submit</button>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="true" name="vegan" id="vegan">
+                <label class="form-check-label" for="vegan">
+                    Vegan
+                </label>
+            </div>
+            <button class="btn btn-primary mt-2">Submit</button>
         </form>
     </div>
 {% endblock %}

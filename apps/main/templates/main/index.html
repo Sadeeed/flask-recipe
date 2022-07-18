@@ -10,12 +10,35 @@
             {% endif %}
         {% endwith %}
         <h1>Recipes</h1>
+        <div class="input-group mb-1">
+            <input id="search" type="search" class="form-control" placeholder="Search" aria-label="Search"
+                   aria-describedby="search-addon" onkeyup="searchHandler()"/>
+            <button type="button" class="btn btn-outline-primary" onclick="searchHandler()">search</button>
+        </div>
         <a class="btn btn-primary mb-2" href="{{ url_for('main.add_recipe') }}">Add</a>
-        <ul class="list-group">
+        <ul class="list-group" id="recipe-list">
             {% for recipe in recipes %}
                 <a href="{{ url_for('main.recipe', slug=recipe.slug) }}"
-                   class="list-group-item list-group-item-action">{{ recipe.name }}</a>
+                   class="list-group-item list-group-item-action">{% if recipe.vegan %}<ion-icon name="leaf" style="color: darkgreen;text-align:right"></ion-icon>{% endif %}  {{ recipe.name }}</a>
             {% endfor %}
         </ul>
     </div>
+{% endblock %}
+
+{% block extraJs %}
+    <script>
+        const searchHandler = () => {
+            const search = document.getElementById('search').value;
+            const recipeList = document.getElementById('recipe-list');
+            const recipes = recipeList.getElementsByTagName('a');
+            for (let i = 0; i < recipes.length; i++) {
+                const recipe = recipes[i];
+                if (recipe.innerText.toLowerCase().indexOf(search.toLowerCase()) === -1) {
+                    recipe.style.display = 'none';
+                } else {
+                    recipe.style.display = 'block';
+                }
+            }
+        };
+    </script>
 {% endblock %}

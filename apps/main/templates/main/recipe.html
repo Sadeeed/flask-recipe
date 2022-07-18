@@ -3,7 +3,7 @@
 {% block content %}
     <div class="container mt-5">
         <div class="card">
-            <h5 class="card-header text-center">{{ name }}</h5>
+            <h5 class="card-header text-center">{% if vegan %}<ion-icon name="leaf" style="color: darkgreen;text-align:right"></ion-icon>{% endif %}  {{ name }}</h5>
             <div class="card-body">
                 <h6 class="card-title mb-2">Ingredients</h6>
                 <ul>

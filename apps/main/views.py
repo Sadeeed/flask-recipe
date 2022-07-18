@@ -22,7 +22,8 @@ def recipe(slug):
         ingredients = recipe.ingredients
         method = recipe.method
         name = recipe.name
-        return render_template('recipe.html', name=name, ingredients=ingredients, method=method, id=recipe.id)
+        return render_template('recipe.html', name=name, ingredients=ingredients,
+                               method=method, id=recipe.id, vegan=recipe.vegan)
     else:
         flash("This recipe does not exist")
         return redirect(url_for('main.index'))
@@ -38,8 +39,10 @@ def add_recipe():
         mutable_request = request.form.copy()
         mutable_request.pop('name')
         mutable_request.pop('method')
+        mutable_request.pop('vegan')
+
         new_recipe = Recipe(name=request.form['name'], slug=slugify(request.form['name']),
-                            method=request.form['method'])
+                            method=request.form['method'], vegan=True if request.form['vegan'] == 'true' else False)
 
         for ingredient in mutable_request.values():
             ingredient = Ingredient(name=ingredient)
@@ -72,14 +75,19 @@ def edit_recipe(recipe_id):
             name = recipe.name
             ingredients = recipe.ingredients
             method = recipe.method
-            return render_template('edit_recipe.html', name=name, ingredients=ingredients, method=method)
+            vegan = recipe.vegan
+            return render_template('edit_recipe.html', name=name, ingredients=ingredients, method=method, vegan=vegan)
+
         if request.method == 'POST':
             recipe.name = request.form['name']
             recipe.method = request.form['method']
+            recipe.vegan = True if 'vegan' in request.form else False
 
             mutable_request = request.form.copy()
             mutable_request.pop('name')
             mutable_request.pop('method')
+            if 'vegan' in request.form:
+                mutable_request.pop('vegan')
 
             for ingredient, new_ingredient in zip(recipe.ingredients, mutable_request.values()):
                 ingredient.name = new_ingredient

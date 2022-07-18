@@ -36,7 +36,7 @@ def create_app():
     app.register_blueprint(auth_blueprint, url_prefix="/auth")
 
     # apis
-    api.add_resource(RecipeList, '/api/recipe')
+    api.add_resource(RecipeList, '/api/recipes')
     api.add_resource(RecipeView, '/api/recipe/<recipe_id>')
 
     return app

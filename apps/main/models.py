@@ -13,6 +13,7 @@ class Recipe(db.Model):
     ingredients = db.relationship('Ingredient', secondary=ingredients, lazy='subquery',
                                   backref=db.backref('recipes', lazy=True))
     method = db.Column(db.String(10000))
+    vegan = db.Column(db.Boolean)
 
     def __repr__(self):
         return f"<Recipe {self.name}>"
