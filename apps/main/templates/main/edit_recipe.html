@@ -9,7 +9,7 @@
                 <input type="text" class="form-control" id="name" name="name" value="{{ name }}">
             </div>
             <div class="mb-3" id="ingredient-list">
-                <p>Ingredients</p>
+                <p>Zutaten</p>
                 {% for ingredient in ingredients %}
                     <input type="text" class="form-control mt-1" id="ingr-{{ loop.index0 }}"
                            name="ingr-{{ loop.index0 }}" placeholder="Ingredient {{ loop.index }}"
@@ -17,7 +17,7 @@
                 {% endfor %}
             </div>
             <div class="mb-3">
-                <label for="method" class="form-label">Instructions</label>
+                <label for="method" class="form-label">Anleitung</label>
                 <textarea class="form-control" id="method" name="method">{{ method }}</textarea>
             </div>
             <div class="form-check">
@@ -27,7 +27,7 @@
                     Vegan
                 </label>
             </div>
-            <button class="btn btn-primary mt-2">Submit</button>
+            <button class="btn btn-primary mt-2">Anmelden</button>
         </form>
     </div>
 {% endblock %}

@@ -1,5 +1,14 @@
 {% extends 'layouts/base.html' %}
 
 {% block content %}
-    Welcome {{ name }}
+    <div class="container mt-5">
+        <div class="card">
+            <h5 class="card-header text-center">Profil</h5>
+            <div class="card-body">
+                <h5 class="card-title text-center">Name: {{ name }}</h5>
+                <p class="card-text">{{ description }}</p>
+                <a href="{{ url_for('auth.logout') }}" class="btn btn-primary">Abmelden</a>
+            </div>
+        </div>
+    </div>
 {% endblock %}

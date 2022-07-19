@@ -10,10 +10,10 @@
     {% endwith %}
     <div class="card mt-5">
         <div class="card-body">
-            <h2 class="card-title text-center">Sign Up</h2>
+            <h2 class="card-title text-center">Registrieren</h2>
             <form method="POST" action="{{ url_for('auth.signup_post') }}">
                 <div class="mb-3">
-                    <label for="email" class="form-label">Email</label>
+                    <label for="email" class="form-label">Email-Adresse</label>
                     <input type="email" class="form-control" id="email" name="email">
                 </div>
                 <div class="mb-3">
@@ -21,10 +21,10 @@
                     <input type="text" class="form-control" id="username" name="username">
                 </div>
                 <div class="mb-3">
-                    <label for="password" class="form-label">Password</label>
+                    <label for="password" class="form-label">Passwort</label>
                     <input type="password" class="form-control" id="password" name="password">
                 </div>
-                <button type="submit" class="btn btn-primary">Submit</button>
+                <button type="submit" class="btn btn-primary">Anmelden</button>
             </form>
         </div>
     </div>

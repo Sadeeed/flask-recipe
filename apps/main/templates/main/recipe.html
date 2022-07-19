@@ -5,17 +5,17 @@
         <div class="card">
             <h5 class="card-header text-center">{% if vegan %}<ion-icon name="leaf" style="color: darkgreen;text-align:right"></ion-icon>{% endif %}  {{ name }}</h5>
             <div class="card-body">
-                <h6 class="card-title mb-2">Ingredients</h6>
+                <h6 class="card-title mb-2">Zutaten</h6>
                 <ul>
                     {% for ingredient in ingredients %}
                         <li>{{ ingredient.name }}</li>
                     {% endfor %}
                 </ul>
-                <h6 class="card-title mb-2">Instructions:</h6>
+                <h6 class="card-title mb-2">Anleitung:</h6>
                 <p class="card-text">{{ method }}</p>
             </div>
         </div>
-        <a class="btn btn-success mt-1" href="{{ url_for('main.edit_recipe', recipe_id=id) }}">Edit</a>
-        <a class="btn btn-danger mt-1" href="{{ url_for('main.del_recipe', recipe_id=id) }}">Delete</a>
+        <a class="btn btn-success mt-1" href="{{ url_for('main.edit_recipe', recipe_id=id) }}">Bearbeiten</a>
+        <a class="btn btn-danger mt-1" href="{{ url_for('main.del_recipe', recipe_id=id) }}">Löschen</a>
     </div>
 {% endblock %}

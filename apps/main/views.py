@@ -119,7 +119,7 @@ class RecipeList(Resource):
         data = request.get_json()
         new_recipe = Recipe(name=data['name'], method=data['method'], slug=slugify(data['name']))
         for ingredient in data['ingredients']:
-            ingredient = Ingredient(name=ingredient)
+            ingredient = Ingredient(name=ingredient['name'])
             new_recipe.ingredients.append(ingredient)
         db.session.add(new_recipe)
         db.session.commit()
