@@ -2,7 +2,7 @@
 
 {% block content %}
     <div class="mt-4">
-        <h1>Edit Recipe</h1>
+        <h1>Rezept Bearbeiten</h1>
         <form method="POST">
             <div class="mb-3">
                 <label for="name" class="form-label">Name</label>
@@ -12,10 +12,11 @@
                 <p>Zutaten</p>
                 {% for ingredient in ingredients %}
                     <input type="text" class="form-control mt-1" id="ingr-{{ loop.index0 }}"
-                           name="ingr-{{ loop.index0 }}" placeholder="Ingredient {{ loop.index }}"
+                           name="ingr-{{ loop.index0 }}" placeholder="Zutat {{ loop.index }}"
                            value="{{ ingredient.name }}">
                 {% endfor %}
             </div>
+            <button type="button" class="btn btn-warning" onclick="addIngredient()">+</button>
             <div class="mb-3">
                 <label for="method" class="form-label">Anleitung</label>
                 <textarea class="form-control" id="method" name="method">{{ method }}</textarea>
@@ -27,23 +28,20 @@
                     Vegan
                 </label>
             </div>
-            <button class="btn btn-primary mt-2">Anmelden</button>
+            <button class="btn btn-primary mt-2">Hinzufügen</button>
         </form>
     </div>
 {% endblock %}
 
-{#{% block extraJs %}#}
-{#    <script>#}
-{#        let ingredient_count = 1#}
-{#        const addIngredient = () => {#}
-{#            let ingredient_list = document.getElementById('ingredient-list')#}
-{#            let new_ingredient_input = `<input type="text" class="form-control mt-1" id="ingr-${ingredient_count}" name="ingr-${ingredient_count}" placeholder="Ingredient ${ingredient_count+1}">`#}
-{#            ingredient_count += 1#}
-{##}
-{#let span = document.createElement('span')#}
-{#span.innerHTML = new_ingredient_input#}
-{#ingredient_list.insertAdjacentElement("beforeend", span)#}
-{#            ingredient_list.insertAdjacentHTML("beforeend", new_ingredient_input)#}
-{#        }#}
-{#    </script>#}
-{#{% endblock %}#}
+{% block extraJs %}
+    <script>
+        const addIngredient = () => {
+            let ingredient_list = document.getElementById('ingredient-list')
+            let ingredient_count = ingredient_list.childElementCount - 1
+            let new_ingredient_input = `<input type="text" class="form-control mt-1" id="ingr-${ingredient_count}" name="ingr-${ingredient_count}" placeholder="Zutat ${ingredient_count + 1}">`
+            ingredient_count += 1
+
+            ingredient_list.insertAdjacentHTML("beforeend", new_ingredient_input)
+        }
+    </script>
+{% endblock %}

@@ -39,10 +39,11 @@ def add_recipe():
         mutable_request = request.form.copy()
         mutable_request.pop('name')
         mutable_request.pop('method')
-        mutable_request.pop('vegan')
+        if 'vegan' in request.form:
+            mutable_request.pop('vegan')
 
         new_recipe = Recipe(name=request.form['name'], slug=slugify(request.form['name']),
-                            method=request.form['method'], vegan=True if request.form['vegan'] == 'true' else False)
+                            method=request.form['method'], vegan=True if 'vegan' in request.form else False)
 
         for ingredient in mutable_request.values():
             ingredient = Ingredient(name=ingredient)
@@ -89,7 +90,16 @@ def edit_recipe(recipe_id):
             if 'vegan' in request.form:
                 mutable_request.pop('vegan')
 
-            for ingredient, new_ingredient in zip(recipe.ingredients, mutable_request.values()):
+            old_length = len(recipe.ingredients)
+            new_length = len(mutable_request)
+            mutable_request = [*mutable_request.values()]
+
+            if new_length > old_length:
+                for ingredient in mutable_request[old_length:]:
+                    ingredient = Ingredient(name=ingredient)
+                    recipe.ingredients.append(ingredient)
+
+            for ingredient, new_ingredient in zip(recipe.ingredients, mutable_request[:old_length]):
                 ingredient.name = new_ingredient
             db.session.commit()
 
