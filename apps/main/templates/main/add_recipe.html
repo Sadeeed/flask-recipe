@@ -2,7 +2,7 @@
 
 {% block content %}
     <div class="mt-4">
-        <h1>Add Recipe</h1>
+        <h1>Rezept hinzufügen</h1>
         <form method="POST">
             <div class="mb-3">
                 <label for="name" class="form-label">Name</label>
@@ -10,7 +10,7 @@
             </div>
             <div class="mb-3" id="ingredient-list">
                 <p>Zutaten</p>
-                <input type="text" class="form-control" id="ingr-0" name="ingr-0" placeholder="Ingredient 1">
+                <input type="text" class="form-control" id="ingr-0" name="ingr-0" placeholder="Zutat 1">
                 {#                    <label for="ingr-0">1</label>#}
             </div>
             <button type="button" class="btn btn-warning" onclick="addIngredient()">+</button>
@@ -24,7 +24,7 @@
                     Vegan
                 </label>
             </div>
-            <button class="btn btn-primary mt-2">Anmelden</button>
+            <button class="btn btn-primary mt-2">Hinzufügen</button>
         </form>
     </div>
 {% endblock %}
@@ -34,7 +34,7 @@
         let ingredient_count = 1
         const addIngredient = () => {
             let ingredient_list = document.getElementById('ingredient-list')
-            let new_ingredient_input = `<input type="text" class="form-control mt-1" id="ingr-${ingredient_count}" name="ingr-${ingredient_count}" placeholder="Ingredient ${ingredient_count+1}">`
+            let new_ingredient_input = `<input type="text" class="form-control mt-1" id="ingr-${ingredient_count}" name="ingr-${ingredient_count}" placeholder="Zutat ${ingredient_count+1}">`
             ingredient_count += 1
 
             {#let span = document.createElement('span')#}

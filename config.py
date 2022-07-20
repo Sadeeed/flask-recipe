@@ -19,3 +19,4 @@ class DevelopmentConfig(Config):
     DEVELOPMENT = True
     DEBUG = True
     SQLALCHEMY_DATABASE_URI = "postgresql://postgres:postgres@localhost:5432/flask-recipes"
+    # SQLALCHEMY_DATABASE_URI = "sqlite:///db.sqlite3"

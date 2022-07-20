@@ -11,9 +11,9 @@
         {% endwith %}
         <h1>Rezpete</h1>
         <div class="input-group mb-1">
-            <input id="search" type="search" class="form-control" placeholder="Search" aria-label="Search"
+            <input id="search" type="search" class="form-control" placeholder="Suche" aria-label="Search"
                    aria-describedby="search-addon" onkeyup="searchHandler()"/>
-            <button type="button" class="btn btn-outline-primary" onclick="searchHandler()">search</button>
+            <button type="button" class="btn btn-outline-primary" onclick="searchHandler()">suchen</button>
         </div>
         <a class="btn btn-primary mb-2" href="{{ url_for('main.add_recipe') }}">Hinzufügen</a>
         <ul class="list-group" id="recipe-list">
