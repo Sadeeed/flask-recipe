@@ -1,9 +1,25 @@
 from database import db
+import enum
 
 ingredients = db.Table('ingredients',
                        db.Column('ingredient_id', db.Integer, db.ForeignKey('ingredient.id'), primary_key=True),
                        db.Column('recipe_id', db.Integer, db.ForeignKey('recipe.id'), primary_key=True)
                        )
+
+
+class CategoryEnum(enum.Enum):
+    starter = 'vorspeise'
+    main_course = 'hauptgang'
+    dessert = 'dessert'
+    snack = 'snack'
+
+
+class EnumDebug(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    category = db.Column(
+        db.Enum(CategoryEnum, name='category_enum'),
+        nullable=False
+    )
 
 
 class Recipe(db.Model):
@@ -13,6 +29,11 @@ class Recipe(db.Model):
     ingredients = db.relationship('Ingredient', secondary=ingredients, lazy='subquery',
                                   backref=db.backref('recipes', lazy=True))
     method = db.Column(db.String(10000))
+    category = db.Column(
+        db.Enum(CategoryEnum, name='category_enum'),
+        default=CategoryEnum.starter,
+        nullable=True
+    )
     vegan = db.Column(db.Boolean)
 
     def __repr__(self):

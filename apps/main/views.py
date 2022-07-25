@@ -4,7 +4,7 @@ from flask_restful import Resource
 from slugify import slugify
 from database import db
 
-from apps.main.models import Recipe, Ingredient
+from apps.main.models import Recipe, Ingredient, CategoryEnum
 
 main = Blueprint('main', __name__, template_folder="templates/main")
 
@@ -33,17 +33,24 @@ def recipe(slug):
 @login_required
 def add_recipe():
     if request.method == 'GET':
-        return render_template('add_recipe.html')
+        categories = list(map(lambda c: c.value, CategoryEnum))
+        return render_template('add_recipe.html', categories=categories)
 
     if request.method == 'POST':
         mutable_request = request.form.copy()
         mutable_request.pop('name')
         mutable_request.pop('method')
+        mutable_request.pop('category')
         if 'vegan' in request.form:
             mutable_request.pop('vegan')
 
+        if request.form['name'] == '':
+            flash("Bitte geben Sie einen Namen für das Rezept ein")
+            return redirect(url_for('main.add_recipe'))
+
         new_recipe = Recipe(name=request.form['name'], slug=slugify(request.form['name']),
-                            method=request.form['method'], vegan=True if 'vegan' in request.form else False)
+                            method=request.form['method'], category=request.form['category'],
+                            vegan=True if 'vegan' in request.form else False)
 
         for ingredient in mutable_request.values():
             ingredient = Ingredient(name=ingredient)
@@ -77,10 +84,16 @@ def edit_recipe(recipe_id):
             ingredients = recipe.ingredients
             method = recipe.method
             vegan = recipe.vegan
-            return render_template('edit_recipe.html', name=name, ingredients=ingredients, method=method, vegan=vegan)
+            categories = list(map(lambda c: c.value, CategoryEnum))
+            selected_category = recipe.category
+            return render_template('edit_recipe.html', name=name, ingredients=ingredients, method=method,
+                                   vegan=vegan, categories=categories, selected_category=selected_category)
 
         if request.method == 'POST':
-            recipe.name = request.form['name']
+            if request.form['name'] == '':
+                flash("Bitte geben Sie einen Namen für das Rezept ein.")
+            else:
+                recipe.name = request.form['name']
             recipe.method = request.form['method']
             recipe.vegan = True if 'vegan' in request.form else False
 

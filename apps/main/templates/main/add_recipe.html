@@ -1,12 +1,19 @@
 {% extends 'layouts/base.html' %}
 
 {% block content %}
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <div class="alert alert-danger mt-3" role="alert">
+                {{ messages[0] }}
+            </div>
+        {% endif %}
+    {% endwith %}
     <div class="mt-4">
         <h1>Rezept hinzufügen</h1>
         <form method="POST">
             <div class="mb-3">
                 <label for="name" class="form-label">Name</label>
-                <input type="text" class="form-control" id="name" name="name">
+                <input type="text" class="form-control" id="name" name="name" required>
             </div>
             <div class="mb-3" id="ingredient-list">
                 <p>Zutaten</p>
@@ -18,10 +25,18 @@
                 <label for="method" class="form-label">Anleitung</label>
                 <textarea class="form-control" id="method" name="method"></textarea>
             </div>
+            <div class="form-group mb-3">
+                <label for="category">Kategorie</label>
+                <select class="form-control" id="category" name="category">
+                    {% for category in categories %}
+                        <option value="{{ category }}">{{ category }}</option>
+                    {% endfor %}
+                </select>
+            </div>
             <div class="form-check">
                 <input class="form-check-input" type="checkbox" value="true" name="vegan" id="vegan">
                 <label class="form-check-label" for="vegan">
-                    Vegan
+                    Vegi
                 </label>
             </div>
             <button class="btn btn-primary mt-2">Hinzufügen</button>
@@ -34,7 +49,7 @@
         let ingredient_count = 1
         const addIngredient = () => {
             let ingredient_list = document.getElementById('ingredient-list')
-            let new_ingredient_input = `<input type="text" class="form-control mt-1" id="ingr-${ingredient_count}" name="ingr-${ingredient_count}" placeholder="Zutat ${ingredient_count+1}">`
+            let new_ingredient_input = `<input type="text" class="form-control mt-1" id="ingr-${ingredient_count}" name="ingr-${ingredient_count}" placeholder="Zutat ${ingredient_count + 1}">`
             ingredient_count += 1
 
             {#let span = document.createElement('span')#}
