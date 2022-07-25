@@ -8,10 +8,10 @@ ingredients = db.Table('ingredients',
 
 
 class CategoryEnum(enum.Enum):
-    starter = 'vorspeise'
-    main_course = 'hauptgang'
-    dessert = 'dessert'
-    snack = 'snack'
+    starter = 'Vorspeise'
+    main_course = 'Hauptgang'
+    dessert = 'Dessert'
+    snack = 'Snack'
 
 
 class EnumDebug(db.Model):
@@ -20,6 +20,12 @@ class EnumDebug(db.Model):
         db.Enum(CategoryEnum, name='category_enum'),
         nullable=False
     )
+
+
+class Rating(db.Model):
+    recipe_id = db.Column(db.Integer, db.ForeignKey('recipe.id'), primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), primary_key=True)
+    rating = db.Column(db.Integer, nullable=False)
 
 
 class Recipe(db.Model):

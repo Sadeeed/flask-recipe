@@ -4,7 +4,7 @@ from flask_restful import Resource
 from slugify import slugify
 from database import db
 
-from apps.main.models import Recipe, Ingredient, CategoryEnum
+from apps.main.models import Recipe, Ingredient, CategoryEnum, Rating
 
 main = Blueprint('main', __name__, template_folder="templates/main")
 
@@ -23,7 +23,7 @@ def recipe(slug):
         method = recipe.method
         name = recipe.name
         return render_template('recipe.html', name=name, ingredients=ingredients,
-                               method=method, id=recipe.id, vegan=recipe.vegan)
+                               method=method, id=recipe.id, vegan=recipe.vegan, category=recipe.category)
     else:
         flash("This recipe does not exist")
         return redirect(url_for('main.index'))
@@ -122,6 +122,25 @@ def edit_recipe(recipe_id):
         return redirect(url_for('main.index'))
 
 
+@main.route("/rate/<recipe_id>", methods=['GET', 'POST'])
+@login_required
+def rate_recipe(recipe_id):
+    # recipe = Recipe.query.filter_by(id=recipe_id).first()
+    # rating = request.form['rating']
+    rating = Rating.query.filter_by(recipe_id=recipe_id, user_id=current_user.id).first()
+    if request.method == 'GET':
+        if rating:
+            return {"rating": rating.rating}
+    if request.method == 'POST':
+        if not rating:
+            rating = Rating(recipe_id=recipe_id, user_id=current_user.id, rating=request.form['rating'])
+            db.session.add(rating)
+        else:
+            rating.rating = request.form['rating']
+        db.session.commit()
+        return {"success": True, "rating": rating.rating}
+
+
 @main.route("/profile")
 @login_required
 def profile():
@@ -130,7 +149,7 @@ def profile():
 
 @main.app_errorhandler(404)
 def page_not_found():
-    return render_template('layouts/404.html'), 404
+    return render_template('layouts/404.html')
 
 
 class RecipeList(Resource):

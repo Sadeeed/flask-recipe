@@ -3,8 +3,10 @@
 {% block content %}
     <div class="container mt-5">
         <div class="card">
-            <h5 class="card-header text-center">{% if vegan %}<ion-icon name="leaf" style="color: darkgreen;text-align:right"></ion-icon>{% endif %}  {{ name }}</h5>
+            <h5 class="card-header text-center">{% if vegan %}
+                <ion-icon name="leaf" style="color: darkgreen;text-align:right"></ion-icon>{% endif %}  {{ name }}</h5>
             <div class="card-body">
+                <h6 class="card-subtitle mb-2">Category: {{ category.value }}</h6>
                 <h6 class="card-title mb-2">Zutaten</h6>
                 <ul>
                     {% for ingredient in ingredients %}
@@ -13,9 +15,71 @@
                 </ul>
                 <h6 class="card-title mb-2">Anleitung:</h6>
                 <p class="card-text">{{ method }}</p>
+                <div class="rating">
+                    <i class="rating__star far fa-star"></i>
+                    <i class="rating__star far fa-star"></i>
+                    <i class="rating__star far fa-star"></i>
+                    <i class="rating__star far fa-star"></i>
+                    <i class="rating__star far fa-star"></i>
+                    <button class="btn btn-sm btn-primary mx-1" onclick="rate()">Rate</button>
+                </div>
             </div>
         </div>
         <a class="btn btn-success mt-1" href="{{ url_for('main.edit_recipe', recipe_id=id) }}">Bearbeiten</a>
         <a class="btn btn-danger mt-1" href="{{ url_for('main.del_recipe', recipe_id=id) }}">Löschen</a>
     </div>
+{% endblock %}
+{% block extraJs %}
+    <script>
+        const ratingStars = [...document.getElementsByClassName("rating__star")];
+
+        function executeRating(stars) {
+            const starClassActive = "rating__star fas fa-star";
+            const starClassInactive = "rating__star far fa-star";
+            const starsLength = stars.length;
+            let i;
+            stars.map((star) => {
+                star.onclick = () => {
+                    i = stars.indexOf(star);
+                    if (star.className === starClassInactive) {
+                        for (i; i >= 0; --i) stars[i].className = starClassActive;
+                    } else {
+                        for (i; i < starsLength; ++i) stars[i].className = starClassInactive;
+                    }
+                };
+            });
+        }
+
+        executeRating(ratingStars);
+
+        const rate = () => {
+            const rating = document.getElementsByClassName("rating__star fas fa-star");
+            const ratingValue = rating.length;
+            console.log(ratingValue);
+
+            const form_data = new FormData();
+            {#form_data.append('recipe_id', {{ id }});#}
+            form_data.append('rating', ratingValue.toString());
+            fetch('{{ url_for('main.rate_recipe', recipe_id=id) }}', {
+                method: 'POST',
+                body: form_data
+            }).then(response => response.json())
+
+        };
+
+        const get_rating = () => {
+            fetch('{{ url_for('main.rate_recipe', recipe_id=id) }}')
+                .then(response => response.json())
+                .then(data => {
+                    const rating = document.getElementsByClassName("rating__star");
+                    const ratingValue = data.rating;
+                    console.log(ratingValue);
+                    for (let i = 0; i < ratingValue; i++) {
+                        rating[i].className = "rating__star fas fa-star";
+                    }
+                });
+        };
+
+        document.onload = get_rating();
+    </script>
 {% endblock %}
