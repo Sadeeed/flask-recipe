@@ -66,5 +66,5 @@ def logout():
 
 
 @auth.app_errorhandler(404)
-def page_not_found():
+def page_not_found(e):
     return render_template('layouts/404.html'), 404
