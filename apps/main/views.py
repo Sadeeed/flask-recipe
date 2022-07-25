@@ -49,7 +49,7 @@ def add_recipe():
             return redirect(url_for('main.add_recipe'))
 
         new_recipe = Recipe(name=request.form['name'], slug=slugify(request.form['name']),
-                            method=request.form['method'], category=request.form['category'],
+                            method=request.form['method'], category=CategoryEnum(request.form['category']).name,
                             vegan=True if 'vegan' in request.form else False)
 
         for ingredient in mutable_request.values():
@@ -95,11 +95,13 @@ def edit_recipe(recipe_id):
             else:
                 recipe.name = request.form['name']
             recipe.method = request.form['method']
+            recipe.category = CategoryEnum(request.form['category']).name
             recipe.vegan = True if 'vegan' in request.form else False
 
             mutable_request = request.form.copy()
             mutable_request.pop('name')
             mutable_request.pop('method')
+            mutable_request.pop('category')
             if 'vegan' in request.form:
                 mutable_request.pop('vegan')
 
