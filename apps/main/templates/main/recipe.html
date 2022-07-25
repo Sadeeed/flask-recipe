@@ -15,14 +15,16 @@
                 </ul>
                 <h6 class="card-title mb-2">Anleitung:</h6>
                 <p class="card-text">{{ method }}</p>
-                <div class="rating">
-                    <i class="rating__star far fa-star"></i>
-                    <i class="rating__star far fa-star"></i>
-                    <i class="rating__star far fa-star"></i>
-                    <i class="rating__star far fa-star"></i>
-                    <i class="rating__star far fa-star"></i>
-                    <button class="btn btn-sm btn-primary mx-1" onclick="rate()">Rate</button>
-                </div>
+                {% if current_user.is_authenticated %}
+                    <div class="rating">
+                        <i class="rating__star far fa-star"></i>
+                        <i class="rating__star far fa-star"></i>
+                        <i class="rating__star far fa-star"></i>
+                        <i class="rating__star far fa-star"></i>
+                        <i class="rating__star far fa-star"></i>
+                        <button class="btn btn-sm btn-primary mx-1" onclick="rate()">Rate</button>
+                    </div>
+                {% endif %}
             </div>
         </div>
         <a class="btn btn-success mt-1" href="{{ url_for('main.edit_recipe', recipe_id=id) }}">Bearbeiten</a>
