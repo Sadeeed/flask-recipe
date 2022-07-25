@@ -6,7 +6,7 @@
             <h5 class="card-header text-center">{% if vegan %}
                 <ion-icon name="leaf" style="color: darkgreen;text-align:right"></ion-icon>{% endif %}  {{ name }}</h5>
             <div class="card-body">
-                <h6 class="card-subtitle mb-2">Category: {{ category.value }}</h6>
+                <h6 class="card-subtitle mb-2">Kategorie: {{ category.value }}</h6>
                 <h6 class="card-title mb-2">Zutaten</h6>
                 <ul>
                     {% for ingredient in ingredients %}
@@ -22,7 +22,7 @@
                         <i class="rating__star far fa-star"></i>
                         <i class="rating__star far fa-star"></i>
                         <i class="rating__star far fa-star"></i>
-                        <button class="btn btn-sm btn-primary mx-1" onclick="rate()">Rate</button>
+                        <button class="btn btn-sm btn-primary mx-1" onclick="rate()">Bewerten</button>
                     </div>
                 {% endif %}
             </div>
