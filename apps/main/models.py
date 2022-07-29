@@ -32,6 +32,7 @@ class Recipe(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(150))
     slug = db.Column(db.String(256))
+    ratings = db.relationship('Rating', backref='recipe', lazy='dynamic', cascade='all, delete-orphan')
     ingredients = db.relationship('Ingredient', secondary=ingredients, lazy='subquery',
                                   backref=db.backref('recipes', lazy=True))
     method = db.Column(db.String(10000))
